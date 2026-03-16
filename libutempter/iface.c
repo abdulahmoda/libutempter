@@ -22,6 +22,10 @@
 # define _GNU_SOURCE	1
 #endif
 
+#ifdef (QNX)
+#include <utmp.h>
+#endif
+
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
