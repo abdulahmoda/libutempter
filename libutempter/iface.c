@@ -24,6 +24,7 @@
 
 #ifdef QNX
 #include <utmp.h>
+#define SA_RESTART 0
 #endif
 
 #include <errno.h>
