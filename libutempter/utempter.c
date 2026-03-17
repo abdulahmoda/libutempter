@@ -108,9 +108,13 @@ write_uwtmp_record(const char *user, const char *term, const char *host,
 		ut.ut_type = DEAD_PROCESS;
 
 	ut.ut_pid = pid;
-
+    
+    #ifdef QNX
+    ut.ut_time = tv.tv_sec;
+    #else
 	ut.ut_tv.tv_sec = (__typeof__(ut.ut_tv.tv_sec)) tv.tv_sec;
 	ut.ut_tv.tv_usec = (__typeof__(ut.ut_tv.tv_usec)) tv.tv_usec;
+    #endif
 
 	setutent();
 	if (!pututline(&ut))
