@@ -127,8 +127,20 @@ write_uwtmp_record(const char *user, const char *term, const char *host,
             fatal_error("pututline: %s", strerror(errno));
     #endif
 	endutent();
+    
 
+    #ifdef QNX
+        
+        utmpname(_PATH_WTMP);
+        setutent();
+
+        while (getutent());
+
+        pututline(&ut);
+        endutent();
+    #else
 	(void) updwtmp(_PATH_WTMP, &ut);
+    #endif
 
 	debug_msg("utmp/wtmp record %s for terminal '%s'",
 		  add ? "added" : "removed", term);
