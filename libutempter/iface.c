@@ -22,7 +22,7 @@
 # define _GNU_SOURCE	1
 #endif
 
-#ifdef (QNX)
+#ifdef QNX
 #include <utmp.h>
 #endif
 
