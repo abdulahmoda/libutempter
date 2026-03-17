@@ -91,10 +91,12 @@ write_uwtmp_record(const char *user, const char *term, const char *host,
 	len = strlen(user);
 	memcpy(ut.ut_name, user, MIN(sizeof(ut.ut_name), len));
 
-	if (host) {
+	#ifndef QNX
+    if (host) {
 		len = strlen(host);
 		memcpy(ut.ut_host, host, MIN(sizeof(ut.ut_host), len));
 	}
+    #endif
 
 	len = strlen(term);
 	memcpy(ut.ut_line, term, MIN(sizeof(ut.ut_line), len));
