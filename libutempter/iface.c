@@ -67,21 +67,24 @@ do_child(int master_fd, const char *path, char *const *argv)
 
 	while (EACCES == errno) {
 		/* try saved group ID */
-		gid_t rgid, egid, sgid;
+        
+        #ifdef QNX
+            gid_t egid = getegid(); 
+            gid_t sgid = getgid();
+        #else 
+		    gid_t rgid, egid, sgid;
+            if (getresgid(&rgid, &egid, &sgid))
+                break;
+        #endif
 
-		if (getresgid(&rgid, &egid, &sgid))
-			break;
-
-		if (sgid == egid)
-			break;
-
-		if (setgid(sgid))
-			break;
-
-		(void) execv(path, argv);
-		break;
+            if (sgid == egid)
+                break;
+            if (setgid(sgid))
+                break;
+        
+            (void) execv(path, argv);
+            break;
 	}
-
 	_exit(EXIT_FAILURE);
 }
 
